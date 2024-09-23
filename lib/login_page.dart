@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ForgotPasswordPage.dart';
 import 'product_catalog_page.dart'; // Import the product catalog page
 
 class LoginPage extends StatefulWidget {
@@ -13,11 +14,12 @@ class _LoginPageState extends State<LoginPage> {
   void _login() {
     final username = _usernameController.text;
     final password = _passwordController.text;
-//Print credentials
+
+    // Print credentials
     print('Username: $username');
     print('Password: $password');
 
-// Navigate Catalog Page
+    // Navigate to the Product Catalog Page
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ProductCatalogPage()),
@@ -50,35 +52,59 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('Rental System',
+                Text(
+                  'Rental System',
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 34.0),
+
+                // ID label and text field
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'ID',
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 8.0),
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                  labelText: 'ID',
-                  border: OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                 ),
+
                 SizedBox(height: 16.0),
+
+                // Pass label and text field
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Pass',
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 8.0),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Pass',
                     border: OutlineInputBorder(),
                   ),
                 ),
+
                 SizedBox(height: 16.0),
+
                 ElevatedButton(
                   onPressed: _login,
                   child: Text('Sign In'),
                 ),
+
                 SizedBox(height: 16.0),
+
                 Align(
                   alignment: Alignment.center,
                   child: Column(
@@ -86,7 +112,11 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
-                          // Implement forgot password logic
+                          // Navigate to ForgotPasswordPage when button is pressed
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                          );
                         },
                         child: Text('Forgot Password?'),
                       ),

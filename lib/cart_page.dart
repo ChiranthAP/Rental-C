@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'product_catalog_page.dart'; // Import the Product model
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   final List<Product> cart;
 
   CartPage({required this.cart});
+
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  // Method to remove a product from the cart
+  void _removeFromCart(Product product) {
+    setState(() {
+      widget.cart.remove(product);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +24,7 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Your Cart'),
       ),
-      body: cart.isEmpty
+      body: widget.cart.isEmpty
           ? Center(
         child: Text(
           'Your cart is empty',
@@ -20,17 +32,23 @@ class CartPage extends StatelessWidget {
         ),
       )
           : ListView.builder(
-        itemCount: cart.length,
+        itemCount: widget.cart.length,
         itemBuilder: (context, index) {
-          final product = cart[index];
+          final product = widget.cart[index];
           return ListTile(
             leading: Image.asset(product.imageUrl, width: 50, height: 50),
             title: Text(product.name),
             subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
+            trailing: IconButton(
+              icon: Icon(Icons.remove_circle_outline),
+              onPressed: () {
+                _removeFromCart(product); // Call to remove product
+              },
+            ),
           );
         },
       ),
-      bottomNavigationBar: cart.isNotEmpty
+      bottomNavigationBar: widget.cart.isNotEmpty
           ? Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
