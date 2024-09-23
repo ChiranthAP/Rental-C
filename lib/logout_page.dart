@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';  // Import image picker
-import 'dart:io';  // For working with file paths
+import 'package:image_picker/image_picker.dart'; // Image picker package
+import 'dart:io'; // To handle image files
 import 'login_page.dart';
 
 class LogoutPage extends StatefulWidget {
@@ -9,16 +9,15 @@ class LogoutPage extends StatefulWidget {
 }
 
 class _LogoutPageState extends State<LogoutPage> {
-  // Controller for the username text field
+  // Controllers for the username and phone number fields
   final TextEditingController _usernameController = TextEditingController(text: 'xyxx');
+  final TextEditingController _phoneNumberController = TextEditingController(text: '123-456-7890');
 
-  // To store the selected profile image
+  // For handling profile image
   File? _profileImage;
-
-  // Image picker instance
   final ImagePicker _picker = ImagePicker();
 
-  // Function to pick an image from the gallery
+  // Function to pick image from gallery
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -29,6 +28,16 @@ class _LogoutPageState extends State<LogoutPage> {
     }
   }
 
+  // Save user data (you can extend this to include saving logic)
+  void _saveData() {
+    final username = _usernameController.text;
+    final phoneNumber = _phoneNumberController.text;
+
+    // For now, just print the details
+    print('Saved Username: $username');
+    print('Saved Phone Number: $phoneNumber');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,55 +46,88 @@ class _LogoutPageState extends State<LogoutPage> {
         backgroundColor: Colors.greenAccent,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: _pickImage,  // Open the gallery when the image is tapped
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage: _profileImage != null
-                    ? FileImage(_profileImage!)  // Show the selected image
-                    : AssetImage('assets/profile_placeholder.png') as ImageProvider,  // Default placeholder image
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: 20,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Profile image with option to edit
+              GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage: _profileImage != null
+                      ? FileImage(_profileImage!)
+                      : AssetImage('assets/profile_placeholder.png') as ImageProvider,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            // Editable username field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: TextField(
-                controller: _usernameController, // Bind the controller to this text field
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
+              SizedBox(height: 20),
+
+              // Username TextField
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: TextField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(),
+                  ),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-            ),
-            SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate back to the Login Page
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Text('Logout'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              SizedBox(height: 20),
+
+              // Phone number TextField
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: TextField(
+                  controller: _phoneNumberController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(),
+                  ),
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 40),
+
+              // Save button
+              ElevatedButton(
+                onPressed: _saveData,
+                child: Text('Save'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // Logout button
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text('Logout'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
