@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ForgotPasswordPage.dart';
+import 'ForgotPasswordPage.dart'; //Import ForgotPasswordPage
 import 'product_catalog_page.dart'; // Import the product catalog page
 
 class LoginPage extends StatefulWidget {

@@ -57,14 +57,62 @@ class _ProductCatalogPageState extends State<ProductCatalogPage> {
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-          return ListTile(
-            leading: Image.asset(product.imageUrl, width: 50, height: 50),
-            title: Text(product.name),
-            subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-            trailing: ElevatedButton(
-              onPressed: () => _addToCart(product),
-              child: Text('Add to Cart'),
-            ),
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Product Image on the left
+                    Image.asset(
+                      product.imageUrl,
+                      width: 80, // Reduced image size
+                      height: 80, // Reduced image size
+                      fit: BoxFit.cover,
+                    ),
+                    SizedBox(width: 16), // Space between image and text
+                    // Product details and "Add to Cart" button on the right
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.name,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            '\$${product.price.toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerRight, // Align button to the right
+                            child: ElevatedButton(
+                              onPressed: () => _addToCart(product),
+                              child: Text('Add to Cart'),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18), // Adjust the size
+                                minimumSize: Size(150, 36), // Set minimum width and height
+                                textStyle: TextStyle(fontSize: 09), // Button text size
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 24), // Add more space between products
+            ],
           );
         },
       ),
